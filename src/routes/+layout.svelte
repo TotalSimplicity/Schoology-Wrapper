@@ -9,14 +9,21 @@
     let showSidebar = $state(false);
 
     function handleMouseMove(event: MouseEvent) {
-        showSidebar = event.clientX < 40;
+        if(!showSidebar)
+            showSidebar = event.clientX < 40;
+        else
+            showSidebar = event.clientX < 250;
     }
 
     onMount(() => {
-        window.addEventListener('mousemove', handleMouseMove);
+        if (typeof window !== 'undefined') {
+            window.addEventListener('mousemove', handleMouseMove);
+        }
     });
     onDestroy(() => {
-        window.removeEventListener('mousemove', handleMouseMove);
+        if (typeof window !== 'undefined') {
+            window.removeEventListener('mousemove', handleMouseMove);
+        }
     });
 </script>
 
@@ -25,4 +32,4 @@
         <Sidebar {courses} />
     {/if}
     <div>{@render children()}</div>
-</div>
+</div>  
