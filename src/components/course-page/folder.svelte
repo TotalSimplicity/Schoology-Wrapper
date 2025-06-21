@@ -1,7 +1,9 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import Folder from "./folder.svelte";
-    import { ChevronDown, ChevronRight } from '@lucide/svelte';
+    import Assignment from "./assignment.svelte";
+    import Page from "./page.svelte";
+    import { ChevronDown, ChevronRight} from '@lucide/svelte';
 
     let { folder } = $props()
 
@@ -27,28 +29,30 @@
 
 <div class="flex ">
     <div>
-        <div class="flex">
+        <button class="flex" onclick={() => (isOpened = !isOpened)}>
             <h2>📁{folder.title}</h2>
             {#if folderChildren && folderChildren.length > 0}
-                <button
-                    class="ml-2 text-blue-500 hover:underline"
-                    onclick={() => (isOpened = !isOpened)}
+                <div
+                    class="ml-2"
+                    
                 >
                     {#if isOpened}
                         <ChevronDown color="#FFFFFF" />
                     {:else}
                         <ChevronRight color="#FFFFFF" />
                     {/if}
-                </button>
+                </div>
             {/if}
-        </div>
+        </button>
         {#if folderChildren && isOpened}
-            <div class="ml-4">
+            <div class="ml-4 flex flex-col items-start">
                 {#each folderChildren as child}
                     {#if child.type === 'folder'}
                         <Folder folder={child} />
-                    {:else}
-                        <div>{child.title}</div>
+                    {:else if child.type === 'assignment'}
+                        <Assignment assignment={child} />
+                    {:else if child.type === 'page'}
+                        <Page page={child} />
                     {/if}
                 {/each}
             </div>
