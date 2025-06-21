@@ -1,20 +1,14 @@
 <script lang="ts">
+	import Folder from "$/components/course-page/folder.svelte";
+    import FolderManager from "$components/course-page/folder-manager.svelte";
     let { data } = $props()
 
-    $effect: {
-        console.log(data.folders)
-    }
 </script>
 
 <div>
     <h1>{data.courseData.course_title}</h1>
     <h2>{data.courseData.section_title}</h2>
 
-    <div class="flex flex-col">
-        {#each data.folders as folder}
-            {#if folder.parent_id == 0}
-                <div>folderico {folder.title}</div>
-            {/if}
-        {/each}
-    </div>
+    
+    <FolderManager folders={data.folders} />
 </div>
