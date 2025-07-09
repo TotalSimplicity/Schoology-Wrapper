@@ -1,10 +1,24 @@
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === "GET_ASSIGNMENT") {
-    console.log("Background got request:", request.assignmentId);
+    const assignmentUrl = `https://wilton.schoology.com/assignment/${request.assignmentId}/info`;
 
-    // Do whatever processing or DOM grabbing you want here
+    // Find the tab with the assignment open
+    browser.tabs.query({ url: assignmentUrl }, (tabs) => {
+      if (tabs.length > 0) {
+        // Send a message to the content script in that tab to scrape the data
+        browser.tabs.sendMessage(
+          tabs[0].id,
+          { type: "SCRAPE_ASSIGNMENT" },
+          (response) => {
+            sendResponse({ data: response.data });
+          }
+        );
+      } else {
+        sendResponse({ data: "Assignment page not open in any tab." });
+      }
+    });
 
-    sendResponse({ data: `This is mock assignment data for assignment ID ${request.assignmentId}` });
+    // Indicate async response
+    return true;
   }
-  return true; // required for async sendResponse
 });

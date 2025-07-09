@@ -8,13 +8,7 @@
         let slug = page.url.pathname.split('/').pop();
         console.log("Current Course Slug:", slug);
 
-        window.postMessage({ type: "FETCH_ASSIGNMENT", assignmentId: "12345" }, "*");
-
-        window.addEventListener("message", (event) => {
-        if (event.data.type === "ASSIGNMENT_DATA") {
-            console.log("Assignment Data:", event.data.payload);
-        }
-        });
+        
         
     });
     let { data } = $props()

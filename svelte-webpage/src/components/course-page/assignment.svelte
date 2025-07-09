@@ -3,6 +3,8 @@
     import { NotebookText } from '@lucide/svelte';
     let { assignment } = $props();
 
+    let scrapedAssignment;
+
     async function handleClick() {
         const match = assignment.location.match(/sections\/(\d+)/);
         const courseId = match ? match[1] : null;
@@ -10,13 +12,22 @@
             const response = await fetch(`/api/assignment-info/${courseId}/${assignment.id}`);
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
+                // console.log(data);
             } else {
                 console.error('Failed to fetch assignment details');
             }
         } else {
             console.error('Invalid course ID in assignment location');
         }
+
+        window.postMessage({ type: "FETCH_ASSIGNMENT", assignmentId: assignment.id }, "*");
+
+        window.addEventListener("message", (event) => {
+        if (event.data.type === "ASSIGNMENT_DATA") {
+            scrapedAssignment = event.data.payload;
+            console.log("Scraped Assignment Data:", event.data.payload);
+        }
+        });
     }
 </script>
 

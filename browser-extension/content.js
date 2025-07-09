@@ -16,3 +16,15 @@ window.addEventListener("message", (event) => {
     );
   }
 });
+
+// Listen for scrape requests from the background script
+browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.type === "SCRAPE_ASSIGNMENT") {
+    // Example: scrape the assignment title and description
+    const title = document.querySelector(".page-title ")?.innerText || "";
+    const description = document.querySelector(".info-body")?.innerHTML || "";
+    // TODO: Replace selectors above with the actual selectors from Schoology's DOM
+
+    sendResponse({ data: { title, description } });
+  }
+});
