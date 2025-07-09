@@ -2,18 +2,25 @@
 	import Folder from "$/components/course-page/folder.svelte";
     import FolderManager from "$components/course-page/folder-manager.svelte";
 	import { onMount } from "svelte";
+    import { page } from '$app/state';
+
+    $effect(() => {
+        let slug = page.url.pathname.split('/').pop();
+        console.log("Current Course Slug:", slug);
+
+        window.postMessage({ type: "FETCH_ASSIGNMENT", assignmentId: "12345" }, "*");
+
+        window.addEventListener("message", (event) => {
+        if (event.data.type === "ASSIGNMENT_DATA") {
+            console.log("Assignment Data:", event.data.payload);
+        }
+        });
+        
+    });
     let { data } = $props()
+    
 
-
-    // onMount(() => {
-    //     if (!data.courseData) {
-    //         console.error("Course data is not available");
-    //     }
-    //     if (!data.folders) {
-    //         console.error("Folders data is not available");
-    //     }
-    //     console.log("Course Data:", data.courseData);
-    // });
+    
 </script>
 
 <div>
