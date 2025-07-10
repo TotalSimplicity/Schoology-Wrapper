@@ -3,6 +3,7 @@
     import Folder from "./folder.svelte";
     import Assignment from "./assignment-listing.svelte";
     import Page from "./page-listing.svelte";
+    import Document from './document-listing.svelte';
     import { ChevronDown, ChevronRight} from '@lucide/svelte';
 
     let { folder } = $props()
@@ -53,7 +54,9 @@
                         <Assignment assignment={child} />
                     {:else if child.type === 'page'}
                         <Page page={child} />
-                    {/if}
+                    {:else if child.type === 'document'}
+                        <Document document={child} />
+                    {/if}   
                 {/each}
             </div>
         {/if}
