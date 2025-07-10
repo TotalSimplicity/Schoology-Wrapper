@@ -1,8 +1,8 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import Folder from "./folder.svelte";
-    import Assignment from "./assignment.svelte";
-    import Page from "./page.svelte";
+    import Assignment from "./assignment-listing.svelte";
+    import Page from "./page-listing.svelte";
     import { ChevronDown, ChevronRight} from '@lucide/svelte';
 
     let { folder } = $props()
