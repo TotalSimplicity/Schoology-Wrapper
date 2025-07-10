@@ -1,11 +1,13 @@
 <script lang="ts">
     
     import { NotebookText } from '@lucide/svelte';
+    import * as openedAssignment from "$/lib/openedAssignment.svelte.js";
     let { assignment } = $props();
 
     let scrapedAssignment;
 
     async function handleClick() {
+        openedAssignment.reset();
         const match = assignment.location.match(/sections\/(\d+)/);
         const courseId = match ? match[1] : null;
         if (courseId) {
@@ -13,6 +15,7 @@
             if (response.ok) {
                 const data = await response.json();
                 // console.log(data);
+                openedAssignment.setApiData(data);
             } else {
                 console.error('Failed to fetch assignment details');
             }
@@ -25,6 +28,7 @@
         window.addEventListener("message", (event) => {
         if (event.data.type === "ASSIGNMENT_DATA") {
             scrapedAssignment = event.data.payload;
+            openedAssignment.setScrapedData(scrapedAssignment);
             console.log("Scraped Assignment Data:", event.data.payload);
         }
         });

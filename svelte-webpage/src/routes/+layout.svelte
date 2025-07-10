@@ -29,7 +29,9 @@
 
 <div class="bg-black min-h-svh w-full text-white flex">
     {#if showSidebar}
-        <Sidebar {courses} />
+        <div class="h-svh w-64">
+            <Sidebar {courses} />
+        </div>
     {/if}
-    <div>{@render children()}</div>
+    <div class="flex-1">{@render children()}</div>
 </div>  
