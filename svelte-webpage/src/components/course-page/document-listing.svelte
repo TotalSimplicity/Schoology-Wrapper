@@ -10,6 +10,7 @@
             if (response.ok) {
                 const data = await response.json();
                 console.log(data);
+                open(data.attachments.links.link[0].url, '_blank');
             } else {
                 console.error('Failed to fetch page details');
             }
