@@ -1,3 +1,15 @@
+const GOOGLE_LOGIN_URL = "https://accounts.google.com/";
+
+browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (
+    changeInfo.status === "loading" &&
+    tab.url &&
+    tab.url.startsWith(GOOGLE_LOGIN_URL)
+  ) {
+    browser.tabs.update(tabId, { active: true });
+  }
+});
+
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === "GET_ASSIGNMENT") {
     const assignmentUrl = `https://wilton.schoology.com/assignment/${request.assignmentId}/info`;
@@ -19,7 +31,11 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 { type: "SCRAPE_ASSIGNMENT" },
                 (response) => {
                   sendResponse({ data: response.data });
-                  browser.tabs.remove(tab.id);
+                  browser.tabs.get(tab.id, (updatedTab) => {
+                    if (!updatedTab.url.startsWith(GOOGLE_LOGIN_URL)) {
+                      browser.tabs.remove(tab.id);
+                    }
+                  });
                 }
               );
             }
