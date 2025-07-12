@@ -27,6 +27,7 @@
         </description>
         
     </div>
+    <iframe src={currentlyOpened.scrapedData.docLink} class="w-full h-96" />
     {/if}
 </div>
 
